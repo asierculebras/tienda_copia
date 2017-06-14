@@ -1,0 +1,17 @@
+body { background: #999; }
+
+#page   { background: #eee;}
+
+#page:after { content: "Wide Layout"; }
+
+nav       { float: left; width: 30%;}
+
+table { float: center; text-align: center; width: 40%;}
+ 
+ td { float: center; width: 10%;}
+
+section    { float: right; width: 100%;}
+
+footer    { clear: both;}
+
+nav a     { display: block; text-align: left;}

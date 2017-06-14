@@ -1,0 +1,11 @@
+
+
+<p>
+Edite el Producto: <%= nombre %>
+</p>
+
+<p>
+  <form method="post" action="/productos/<%= producto.id %>?_method=PUT" >      
+     <% include _form.ejs %>
+  </form>
+</p>
