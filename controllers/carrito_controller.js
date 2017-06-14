@@ -42,13 +42,13 @@ return function (callback) {
 
 var login     = req.body.login;
 var user = "";
-var UserId = "";
 var cajero = "";
 console.log("EL LOGIN PARA BUSCAR EL USER ES " + login);
 
 models.User.findOne({where: {username: login}})
     .then(function(user) { 
           console.log("CONSIGO este user " + user); 
+            /*
             UserId = user.id;
             cajero = user.username;
             console.log("CONSIGO UN USER CON ID: " + UserId); 
@@ -57,7 +57,8 @@ models.User.findOne({where: {username: login}})
 
               console.log("EL MOMBRE DEL USUARIO ES QUE PASO AL CALLBACK ES: " + cajero);
               console.log("EL USUERID QUE PASO AL CALLBACK ES: " + UserId);
-
+              */
+              return user;
         
       })
     .catch(function(error) {
@@ -65,13 +66,16 @@ models.User.findOne({where: {username: login}})
              //next(error);
     });
             
-callback (null, UserId, cajero);
+callback (null, user, cajero);
 
 }
 }
 
 function _function2 (UserId, cajero, callback) {
   return function (callback) {
+
+    var cajero = user.username;
+    var UserId = user.id;
     console.log("ENTRA EN FUNCTION 2");
     console.log("EL USERID DEL cajero QUE TIENE EL CALLBACK ES: " + UserId);
     console.log("EL MOMBRE DEL cajero QUE TIENE EL CALLBACK ES: " + cajero);
