@@ -4,7 +4,7 @@ var router = express.Router();
 var productoController = require('../controllers/producto_controller');
 var userController = require('../controllers/user_controller');
 var sessionController = require('../controllers/session_controller');
-var compraControlles = require('../controllers/compra_controller');
+var compraController = require('../controllers/compra_controller');
 
 //var carritoController = require('../controllers/carrito_controller');
 
@@ -48,7 +48,8 @@ router.get('/session',    sessionController.new);     // formulario login
 router.post('/session',   sessionController.create);  // crear sesión
 router.delete('/session', sessionController.destroy); // destruir sesión
 
-router.get('compra', compraContoller.index);
+router.get('/compra', compraController.index);
+//router.get('/compra', compraController.precio);
 
 // cosas del carrito
 		//router.get('/carrito', carritoController.indexCompra);

@@ -7,14 +7,18 @@ var Sequelize = require('sequelize');
 
 // GET /compra
 exports.index = function(req, res, next) {
-			res.render('compra/index.ejs', { productos: productos});
+			var precio = req.query.precio || 'mierda'
+			res.render('compra/index.ejs', {precio: precio});
 };
+
+
 
 
 // GET /quizzes/:id
 exports.show = function(req, res, next) {
 
-	var answer = req.query.answer || '';
+	var login     = req.body.login;
+    var password  = req.body.password;
 
 	res.render('productos/show', {producto: req.producto,
 								answer: answer});
