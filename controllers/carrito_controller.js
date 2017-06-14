@@ -58,7 +58,7 @@ models.User.findOne({where: {username: login}})
               console.log("EL MOMBRE DEL USUARIO ES QUE PASO AL CALLBACK ES: " + cajero);
               console.log("EL USUERID QUE PASO AL CALLBACK ES: " + UserId);
               */
-              return user;
+              user = user;
         
       })
     .catch(function(error) {
@@ -66,12 +66,12 @@ models.User.findOne({where: {username: login}})
              //next(error);
     });
             
-callback (null, user, cajero);
+callback (user, cajero);
 
 }
 }
 
-function _function2 (UserId, cajero, callback) {
+function _function2 (user, cajero, callback) {
   return function (callback) {
 
     var cajero = user.username;
