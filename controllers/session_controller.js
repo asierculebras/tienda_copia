@@ -176,8 +176,8 @@ console.log("entra en create ( el POST)");
                 isAdmin:user.isAdmin,
                 expires: Date.now() + maxIdleTime
             };
-
-            res.redirect(redir); // redirección a redir
+                next();
+            //res.redirect(redir); // redirección a redir
         } else {
             req.flash('error', 'La autenticación ha fallado. Reinténtelo otra vez.');
 
@@ -197,5 +197,6 @@ exports.destroy = function(req, res, next) {
 
     delete req.session.user;
 
-    res.redirect("/session"); // redirect a login
+    next();
+    //res.redirect("/session"); // redirect a login
 };

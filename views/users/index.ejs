@@ -22,6 +22,14 @@
       <%  } %>
         </a> 
       </td>
+
+      <td>
+        <% if (session.user.isAdmin || session.user.id === users[i].id) { %>
+        <p><%= users[i].Carrito %></p>
+          <%  } %>
+      </td>
+
+
   <%  }; %>
     </tr>
   <%  }; %>

@@ -31,32 +31,20 @@ var Producto = sequelize.import(path.join(__dirname,'producto'));
 // Importar la definicion de la tabla Usuarios de User.js
 var User = sequelize.import(path.join(__dirname,'user'));
 
-/* USARE Migraciones y Seeders
-// sequelize.sync() crea e inicializa tabla de preguntas en DB
-sequelize.sync()
-    .then(function() {
-        // Ya se han creado las tablas necesarias.
-        return Quiz.count()
-                .then(function (c) {
-                    if (c === 0) {   // la tabla se inicializa solo si está vacía
-                        return Quiz.bulkCreate([ {question: 'Capital de Italia',   answer: 'Roma'},
-                                                 {question: 'Capital de Portugal', answer: 'Lisboa'}
-                                              ])
-                                   .then(function() {
-                                        console.log('Base de datos inicializada con datos');
-                                    });
-                    }
-                });
-    })
-    .catch(function(error) {
-        console.log("Error Sincronizando las tablas de la BBDD:", error);
-        process.exit(1);
-    });
-*/
+// Importar la definicion de la tabla Usuarios de Carrito.js
+var Carrito = sequelize.import(path.join(__dirname,'carrito'));
+
+//relaccion 1 a 1 entre los carritos y los usuarios que son los dependientes
+Carrito.belongsTo(User);
+User.hasOne(Carrito);
+
+//relaccion N a N entre los carritos y los productos.
+//Producto.belongsToMany(Carrito);
+
 
 exports.Producto = Producto; // exportar definición de tabla Quiz
 exports.User = User; // exportar definición de tabla DE LOS USUARIOS
-
+exports.Carrito = Carrito;
 
 
 
