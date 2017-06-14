@@ -12,23 +12,7 @@ var url = require('url');
 var maxIdleTime = 5*60*1000;
 
 
-//
-// Middleware usado para destruir la sesion del usuario si se ha
-// excedido el tiempo de inactividad.
-//
-exports.deleteExpiredUserSession = function(req, res, next) {
 
-    if (req.session.user ) { // Hay login
-        if ( req.session.user.expires < Date.now() ) { // Caduco
-            delete req.session.user; // Logout
-            req.flash('info', 'La sesión ha caducado.');
-        } else { // No caduco. Restaurar la hora de expiracion.
-            req.session.user.expires = Date.now() + maxIdleTime;
-        }
-    }
-    // Continuar
-    next();
-};
 
 
 // Middleware: Se requiere hacer login.
@@ -158,7 +142,6 @@ exports.new = function(req, res, next) {
 
 // POST /session   -- Crear la sesion si usuario se autentica
 exports.create = function(req, res, next) {
-console.log("entra en create ( el POST)");
     var redir = req.body.redir || '/'
 
     var login     = req.body.login;
@@ -173,9 +156,11 @@ console.log("entra en create ( el POST)");
             req.session.user = {
                 id:user.id,
                 username:user.username,
-                isAdmin:user.isAdmin,
-                expires: Date.now() + maxIdleTime
+                isAdmin:user.isAdmin
             };
+                console.log("-------------------------------------");
+                console.log("LA SESION QUE SE CREA TIENE ESTOS PARAMETROS:");
+                console.log("y este el del usuario "+user.id)
                 next();
             //res.redirect(redir); // redirección a redir
         } else {

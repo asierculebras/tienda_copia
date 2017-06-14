@@ -9,8 +9,7 @@ var carritoController = require('../controllers/carrito_controller');
 
 //var carritoController = require('../controllers/carrito_controller');
 
-//autologout
-router.all('*',sessionController.deleteExpiredUserSession);
+
 
 
 /* GET home page. */
@@ -47,7 +46,7 @@ router.delete('/users/:userId(\\d+)',    userController.destroy);  // borrar cue
 // Definición de rutas de sesion
 router.get('/session',    sessionController.new);     // formulario login
 router.post('/session',   sessionController.create, carritoController.create);  // crear sesión
-router.delete('/session',  sessionController.destroy, carritoController.destroy); // destruir sesión
+router.delete('/session',  carritoController.destroy, sessionController.destroy); // destruir sesión
 
 router.get('/compra', compraController.index);
 router.get('/generar', compraController.generar);
