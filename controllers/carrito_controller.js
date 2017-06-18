@@ -14,101 +14,56 @@ var redir = req.body.redir || '/'
 
   console.log("EL REDIR ES "+ redir);
 
-var login = req.body.login;
-
-asincrono(req,res);
-
-
-
-res.redirect(redir); // redirección a redir
-
-};
-var asincrono = function (req, res) {
-async.waterfall([
-        _function1(req),
-        _function2,
-        _function3
-    ], function (error, success) {
-        if (error) { alert('Something is wrong!'); }
-        return alert('Done!');
-            next();
-    });
-};
-
-function _function1 (req) {
-return function (callback) {
   console.log("ENTRA EN FUNCTION 1");
 
 
 var login     = req.body.login;
 var user = "";
 var cajero = "";
+var productos ;
 console.log("EL LOGIN PARA BUSCAR EL USER ES " + login);
 
-models.User.findOne({where: {username: login}})
+models.User.findOne({where: {username: login}},{include: [models.Carrito]})
     .then(function(user) { 
-          console.log("CONSIGO este user " + user); 
-            /*
-            UserId = user.id;
-            cajero = user.username;
-            console.log("CONSIGO UN USER CON ID: " + UserId); 
-            user = user;
-            console.log("CONSIGO ESTE USER: " + UserId); 
-
-              console.log("EL MOMBRE DEL USUARIO ES QUE PASO AL CALLBACK ES: " + cajero);
-              console.log("EL USUERID QUE PASO AL CALLBACK ES: " + UserId);
-              */
-              user = user;
-        
-      })
-    .catch(function(error) {
-      console.log("CAGADA");
-             //next(error);
-    });
-            
-callback (user, cajero);
-
-}
-}
-
-function _function2 (user, cajero, callback) {
-  return function (callback) {
-
-    var cajero = user.username;
-    var UserId = user.id;
-    console.log("ENTRA EN FUNCTION 2");
-    console.log("EL USERID DEL cajero QUE TIENE EL CALLBACK ES: " + UserId);
-    console.log("EL MOMBRE DEL cajero QUE TIENE EL CALLBACK ES: " + cajero);
+         var user = user;
+           console.log("CONSIGO este user " + user);
+           console.log("ESTE ES EL USER" +user);
+           var cajero = user.username;
+           var userId = user.id;
+           console.log("ENTRA EN FUNCTION 2");
+           console.log("EL USERID DEL cajero QUE TIENE EL CALLBACK ES: " + userId);
+           console.log("EL MOMBRE DEL cajero QUE TIENE EL CALLBACK ES: " + cajero);
+           console.log("LOS PRODUCTOS SON: " + productos);
 
 
-  var carrito = models.Carrito.build({cajero: cajero ,total:'0',UserId: UserId });
-      callback (err, carrito);
-      }
-    }
+          var carrito = models.Carrito.build({cajero: cajero ,total:'0', productos: productos, UserId: userId})
+                console.log("ENTRA EN FUNCTION 3");
+                carrito.save({fields: ["cajero", "total","productos", "UserId"]})
+                 .then(function(carrito) {
+                    console.log("¡¡¡¡¡¡¡¡¡¡SE HA CREADO UN NUEVO CARRITO!!!!!!!!!!! " + carrito);
+                    console.log("CON ID: " + carrito.id);
+                    console.log("CON USERID: " + carrito.UserId);
+                    console.log("Y EL CAJERO ES : " + carrito.cajero +" Y TOTAL: " + carrito.total);
+                     res.redirect(redir); // redirección a redir
 
-function _function3 (carrito, callback) {
-  return function (callback) {
-    console.log("ENTRA EN FUNCTION 3");
-  carrito.save()
-    .then(function(carrito) {
-      //req.flash('success', 'Carrito creado con éxito.');
-      console.log("SE HA CREADO UN NUEVO CARRITO " + carrito);
-      console.log("CON ID: " + carrito.id);
-      console.log("Y EL CAJERO ES : " + carrito.cajero +" Y TOTAL: " + carrito.total);
+                    }) 
+                    .catch(Sequelize.ValidationError, function(error) {
+                      console.log("%%%%%%%%%%%%%%%   ERROR al crear CARRITO    %%%%%%%%%%%%%%%");
+                      console.log(error);
+                      res.render('/session');
+                    })
+                      .catch(function(error) {
+                              console.log("ERROR AL INTENTAR GUARDAR LAS COSAS");
+                              console.log(error)
+                                     //next(error);
+                            });  
+        })
+      .catch(function(error) {
+        console.log("CAGADA");
+        console.log(error)
+               //next(error);
+      });  
 
-
-
-      //res.redirect(redir); // redirección a redir
-      //next();
-    }) 
-    .catch(Sequelize.ValidationError, function(error) {
-
-      //req.flash('error', 'Error al crear un Comentario: ' + error.message);
-      next(error);
-    }); 
-
-        callback (err);
-  } 
 }
 
 
@@ -116,24 +71,12 @@ function _function3 (carrito, callback) {
 exports.destroy = function (req, res, next) {
 var session = req.session;
 console.log("la sesion uqe hay es   " + session);
-
-var user = session;
+var user = session.user;
 console.log("EL USER ES   " + user);
-
 var id = user.id;
 console.log("EL ID ES   " + id);
-
-
 var username = req.session.user.username ;
-
 console.log("EL CAJERO DEL CARRITO QUE BUSCO ES  " + username);
-
-
-var carrito = models.Carrito.findOne({where: {cajero: username}});
-console.log("EL  CARRITO QUE BUSCO ES  " + carrito);
-console.log("con id:  " );
-
-
 
 
 models.Carrito.findOne({where: {cajero: username}})
@@ -143,8 +86,8 @@ models.Carrito.findOne({where: {cajero: username}})
         console.log("EL CARRITO ENCONTRADO ES: " + carrito.id);
         carrito.destroy()
            .then(function () {
-             req.flash('success', 'Pista eliminada con éxito.');
-              //next();
+              console.log("SE HA BORRADO EL CARRITO");
+              next();
               //res.redirect("/session"); // redirect a login
           })
           .catch(function (error) {
@@ -157,6 +100,8 @@ models.Carrito.findOne({where: {cajero: username}})
     })
     .catch(function(error) {
       console.log("error number 2");
+            console.log(error);
+
 
       //next(error);
     }); 

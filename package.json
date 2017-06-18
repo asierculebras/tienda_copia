@@ -7,6 +7,10 @@
     "migrate_local": "sequelize db:migrate --url sqlite://$(pwd)/tienda.sqlite",
     "seed_local": "sequelize db:seed:all --url sqlite://$(pwd)/tienda.sqlite"
   },
+  "engines":{
+    "node":"6.10.1",
+    "npm": "4.6.1"
+  },
   "dependencies": {
     "async": "^2.4.1",
     "body-parser": "~1.13.2",

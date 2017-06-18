@@ -7,11 +7,12 @@ module.exports = {
            { id:        { type: Sequelize.INTEGER,  allowNull: false,
                           primaryKey: true,         autoIncrement: true,  
                           unique: true },
-            UserId: {type: Sequelize.INTEGER},
              cajero:  { type: Sequelize.STRING,
                           validate: { notEmpty: {msg: "falta un nombre"} } },
              total:    { type: Sequelize.INTEGER,
                           validate: { notEmpty: {msg: "Poner el precio"} } },
+             productos:  { type: Sequelize.JSON,
+                          validate: { notEmpty: {msg: "falta una lista"} } },            
              createdAt: { type: Sequelize.DATE,     allowNull: false },
              updatedAt: { type: Sequelize.DATE,     allowNull: false }
            },

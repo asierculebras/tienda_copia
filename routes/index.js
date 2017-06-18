@@ -25,6 +25,7 @@ router.param('userId', userController.load);  // autoload :userId
 // Definición de rutas de los Productos
 router.get('/productos',                     productoController.index);
 router.get('/productos/:productoId(\\d+)',       productoController.show);
+router.post('/productos/:productoId(\\d+)', productoController.comprar);
 
 router.get('/productos/new',                 productoController.new);
 router.post('/productos',                    productoController.create);
@@ -50,6 +51,9 @@ router.delete('/session',  carritoController.destroy, sessionController.destroy)
 
 router.get('/compra', compraController.index);
 router.get('/generar', compraController.generar);
+
+router.get('/url/:userId(\\d+)', compraController.url);
+//router.get('/url', compraController.url);
 
 // cosas del carrito
 		//router.get('/carrito', carritoController.indexCompra);

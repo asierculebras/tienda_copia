@@ -35,11 +35,12 @@ var User = sequelize.import(path.join(__dirname,'user'));
 var Carrito = sequelize.import(path.join(__dirname,'carrito'));
 
 //relaccion 1 a 1 entre los carritos y los usuarios que son los dependientes
-Carrito.belongsTo(User);
-User.hasOne(Carrito);
+User.hasOne(Carrito, {foreignKey: 'UserId'});
+Carrito.belongsTo(User, {foreignKey: 'UserId'});
+
 
 //relaccion N a N entre los carritos y los productos.
-//Producto.belongsToMany(Carrito);
+//Producto.belongsToMany(Carrito,{foreignKey: 'UserId'});
 
 
 exports.Producto = Producto; // exportar definición de tabla Quiz
